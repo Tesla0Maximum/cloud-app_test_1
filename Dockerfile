@@ -4,8 +4,10 @@ FROM openjdk:24
 # Set the working directory inside the container
 WORKDIR /app
 
+EXPOSE 80
 # Copy the built JAR into the container
 COPY build/libs/*.jar app.jar
 
 # Command to run the JAR
 ENTRYPOINT ["java", "-jar", "app.jar"]
+
