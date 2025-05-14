@@ -2,19 +2,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: my-gradle-app
+  name: gradle-app-deployment
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
-      app: my-gradle-app
+      app: gradle-app
   template:
     metadata:
       labels:
-        app: my-gradle-app
+        app: gradle-app
     spec:
       containers:
       - name: my-gradle-app
-        image: ob4d4/my-gradle-app:latest
+        image: ob4d4/my-gradle-app:latest  
         ports:
-        - containerPort: 80
+        - containerPort: 8080

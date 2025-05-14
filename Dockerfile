@@ -4,7 +4,7 @@ FROM openjdk:24
 # Set the working directory inside the container
 WORKDIR /app
 
-EXPOSE 80
+EXPOSE 8080
 # Copy the built JAR into the container
 COPY build/libs/*.jar app.jar
 
