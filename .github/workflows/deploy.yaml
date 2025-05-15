@@ -1,17 +1,17 @@
-name: Deploy to GKE
+name: Build and Deploy to GKE
 
 on:
   push:
-    branches: [master]   # Still allows auto-deploys on push (optional)
-  workflow_dispatch:    # Enables the manual trigger
-
+    branches: [main]
+  workflow_dispatch:
+    
 jobs:
-  deploy:
-    name: Build & Deploy to GKE
+  build:
+    name: 🐳 Build & Push Docker Image
     runs-on: ubuntu-latest
 
     steps:
-    - name: 📥 Checkout repository
+    - name: 📥 Checkout code
       uses: actions/checkout@v3
 
     - name: 🔧 Set up Docker Buildx
@@ -30,6 +30,15 @@ jobs:
         push: true
         tags: ob4d4/my-gradle-app:latest
 
+  deploy:
+    name: 🚀 Deploy to GKE
+    runs-on: ubuntu-latest
+    needs: build  # 👈 This makes it run only after build completes successfully
+
+    steps:
+    - name: 📥 Checkout code
+      uses: actions/checkout@v3
+
     - name: 🔐 Authenticate to Google Cloud
       uses: google-github-actions/auth@v1
       with:
@@ -39,17 +48,17 @@ jobs:
       uses: google-github-actions/setup-gcloud@v1
       with:
         project_id: ${{ secrets.GCP_PROJECT }}
-    
+
     - name: 🛠 Install GKE auth plugin
       run: |
-          gcloud components install gke-gcloud-auth-plugin --quiet
+        gcloud components install gke-gcloud-auth-plugin --quiet
 
     - name: 🔌 Configure kubectl for GKE
       run: |
         gcloud container clusters get-credentials ${{ secrets.GKE_CLUSTER }} \
           --zone ${{ secrets.GKE_ZONE }} --project ${{ secrets.GCP_PROJECT }}
 
-    - name: 🚀 Deploy to GKE
+    - name: 🚀 Deploy application to GKE
       run: |
         kubectl apply -f deployment.yaml
         kubectl apply -f service.yaml
