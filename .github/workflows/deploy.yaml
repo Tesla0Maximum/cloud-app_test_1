@@ -1,7 +1,9 @@
 name: Deploy to GKE
 
 on:
-  workflow_dispatch:  # Manual trigger from GitHub Actions tab
+  push:
+    branches: [master]   # Still allows auto-deploys on push (optional)
+  workflow_dispatch:    # Enables the manual trigger
 
 jobs:
   deploy:
