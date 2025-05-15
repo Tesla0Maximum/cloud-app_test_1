@@ -3,7 +3,9 @@ name: Deploy to GKE
 on:
   push:
     branches: [master]  # or your default branch
+  workflow_dispatch:
 
+    
 jobs:
   deploy:
     runs-on: ubuntu-latest

@@ -10,4 +10,3 @@ COPY build/libs/*.jar app.jar
 
 # Command to run the JAR
 ENTRYPOINT ["java", "-jar", "app.jar"]
-
